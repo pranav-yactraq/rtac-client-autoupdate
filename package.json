@@ -1,0 +1,83 @@
+{
+  "name": "rtac-app-electron-react-shadcn",
+  "private": true,
+  "version": "1.0.1",
+  "type": "module",
+  "main": "dist-electron/main.js",
+  "build": {
+    "appId": "com.example.rtacapp",
+    "productName": "RTAC App",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "dist-electron/**/*",
+      "resources/**/*",
+      "node_modules/**/*"
+    ],
+    "asar": true,
+    "asarUnpack": [
+      "resources/app.exe"
+    ],
+    "extraResources": [
+      {
+        "from": "resources/",
+        "to": "resources/",
+        "filter": [
+          "app.exe",
+          "yactraq.ico"
+        ]
+      }
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "resources/yactraq.ico",
+      "artifactName": "${productName}-Setup-${version}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build && electron-builder",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.13.5",
+    "@emotion/styled": "^11.13.5",
+    "@mui/icons-material": "^6.1.8",
+    "@mui/material": "^6.1.8",
+    "electron-store": "^10.0.0",
+    "find-process": "^1.4.7",
+    "formik": "^2.4.6",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^7.0.1",
+    "tree-kill": "^1.2.2",
+    "update-electron-app": "^3.1.0",
+    "yup": "^1.4.0"
+  },
+  "devDependencies": {
+    "@types/plist": "^3.0.5",
+    "@types/react": "^18.2.64",
+    "@types/react-dom": "^18.2.21",
+    "@types/verror": "^1.10.10",
+    "@typescript-eslint/eslint-plugin": "^7.1.1",
+    "@typescript-eslint/parser": "^7.1.1",
+    "@vitejs/plugin-react": "^4.2.1",
+    "electron": "^30.0.1",
+    "electron-builder": "^24.13.3",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.5",
+    "source-map-support": "^0.5.21",
+    "typescript": "^5.2.2",
+    "vite": "^5.1.6",
+    "vite-plugin-electron": "^0.28.6",
+    "vite-plugin-electron-renderer": "^0.14.5"
+  }
+}
