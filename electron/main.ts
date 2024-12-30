@@ -49,9 +49,9 @@ function createWindow() {
 } 
 
 updateElectronApp({
-  repo: 'https://github.com/Tranzub/rtac-client-autoupdate.git',
+  repo: 'pranav-yactraq/rtac-client-autoupdate',
   updateInterval: '5 minutes', // Interval to check for updates
-  // logger: require('electron-log') // Optional: Use electron-log for logging
+  logger: require('electron-log') // Optional: Use electron-log for logging
 });
 
 function startServer() {
