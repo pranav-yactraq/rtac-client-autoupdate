@@ -4,6 +4,10 @@
   "version": "1.0.1",
   "type": "module",
   "main": "dist-electron/main.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pranav-yactraq/rtac-client-autoupdate.git"
+  },
   "build": {
     "appId": "com.example.rtacapp",
     "productName": "RTAC App",
@@ -38,7 +42,14 @@
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true
-    }
+    },
+  "publish": [
+      {
+        "provider": "github",
+        "owner": "pranav-yactraq",
+        "repo": "rtac-client-autoupdate"
+      }
+    ]
   },
   "scripts": {
     "dev": "vite",
