@@ -116,7 +116,7 @@ const TestPage = () => {
           }}
         >
           <Button variant="contained" onClick={handleTest} disabled={isTestCapture}>
-            Test Capture
+            Test 
           </Button>
         </Box>
         <Snackbar
