@@ -1,10 +1,11 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow,ipcMain } from 'electron';
 import 'source-map-support/register';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { execFile, ChildProcess } from 'child_process';
 import find from 'find-process';
 import kill from 'tree-kill';
+// import {log} from 'electron-log';  
 import {autoUpdater} from 'electron-updater';
 // import {updateElectronApp} from 'update-electron-app';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -122,6 +123,50 @@ function stopServer() {
   }}
 }
 
+// Enhanced logging and event handling
+// autoUpdater.logger = log;
+// autoUpdater.logger.transports.file.level = 'info';
+
+// Comprehensive event listeners
+autoUpdater.on('update-available', (info) => {
+  win?.webContents.send('update-available', info);
+  console.log('Update available', info);
+});
+
+autoUpdater.on('update-not-available', (info) => {
+  win?.webContents.send('update-not-available', info);
+  console.log('No update available', info);
+});
+
+autoUpdater.on('download-progress', (progressObj) => {
+  win?.webContents.send('download-progress', progressObj);
+  console.log('Download progress', progressObj);
+});
+
+autoUpdater.on('update-downloaded', (info) => {
+  win?.webContents.send('update-downloaded', info);
+  console.log('Update downloaded', info);
+});
+
+autoUpdater.on('error', (error) => {
+  win?.webContents.send('update-error', error);
+  console.log('Update error', error);
+});
+
+// Add IPC handlers for update actions
+app.whenReady().then(() => {
+  ipcMain.handle('check-for-updates', () => {
+    return autoUpdater.checkForUpdates();
+  });
+
+  ipcMain.handle('download-update', () => {
+    return autoUpdater.downloadUpdate();
+  });
+
+  ipcMain.handle('quit-and-install', () => {
+    autoUpdater.quitAndInstall();
+  });
+});
 
 // function stopServer() {
 //   if (serverProcess) {
@@ -131,16 +176,18 @@ function stopServer() {
 // }
 
 // App lifecycle management
-app.whenReady().then(() => {
+app.on(('ready') , () => {
   startServer();
   createWindow();
-  app.on('activate', () => {
-  if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow();
-  }
-});
-  autoUpdater.checkForUpdates();
-
+   autoUpdater.checkForUpdates().catch((error) => {
+    log.error('Update check failed', error);
+  });
+//   app.on('activate', () => {
+//   if (BrowserWindow.getAllWindows().length === 0) {
+//     createWindow();
+//   }
+// });
+  // autoUpdater.checkForUpdates();
 });
 
 

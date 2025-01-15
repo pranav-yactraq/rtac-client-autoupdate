@@ -1,7 +1,7 @@
 {
   "name": "rtac-app-electron-react-shadcn",
   "private": true,
-  "version": "1.0.3",
+  "version": "1.0.2",
   "type": "module",
   "main": "dist-electron/main.js",
   "repository": {
@@ -13,7 +13,7 @@
   },
   "build": {
     "appId": "com.example.rtacapp",
-    "productName": "RTAC App AutoUpdate",
+    "productName": "RTAC",
     "directories": {
       "output": "release"
     },
@@ -45,14 +45,7 @@
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true
-    },
-    "publish": [
-      {
-        "provider": "github",
-        "owner": "pranav-yactraq",
-        "repo": "rtac-client-autoupdate"
-      }
-    ]
+    } 
   },
   "scripts": {
     "dev": "vite",
