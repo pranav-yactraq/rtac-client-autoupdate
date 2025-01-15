@@ -5,9 +5,12 @@ import path from 'node:path';
 import { execFile, ChildProcess } from 'child_process';
 import find from 'find-process';
 import kill from 'tree-kill';
-import {updateElectronApp} from 'update-electron-app';
+import {autoUpdater} from 'electron-updater';
+// import {updateElectronApp} from 'update-electron-app';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+autoUpdater.autoDownload = false;
+autoUpdater.autoInstallOnAppQuit = false;
 
 // Define environment paths
 process.env.APP_ROOT = path.join(__dirname, '..');
@@ -48,11 +51,11 @@ function createWindow() {
   });
 } 
 
-updateElectronApp({
-  repo: 'pranav-yactraq/rtac-client-autoupdate',
-  updateInterval: '5 minutes', // Interval to check for updates
-  logger: require('electron-log') // Optional: Use electron-log for logging
-});
+// updateElectronApp({
+//   repo: 'pranav-yactraq/rtac-client-autoupdate',
+//   updateInterval: '5 minutes', // Interval to check for updates
+//   logger: require('electron-log') // Optional: Use electron-log for logging
+// });
 
 function startServer() {
   console.log("start server")
@@ -128,10 +131,28 @@ function stopServer() {
 // }
 
 // App lifecycle management
-app.on('ready', () => {
+app.whenReady().then(() => {
   startServer();
   createWindow();
+  app.on('activate', () => {
+  if (BrowserWindow.getAllWindows().length === 0) {
+    createWindow();
+  }
 });
+  autoUpdater.checkForUpdates();
+
+});
+
+
+autoUpdater.on('update-available',(info:any) => {
+  console.log('update yes',info)
+});
+autoUpdater.on('update-not-available',(info: any) => {
+  console.log('update no',info)
+})
+autoUpdater.on('update-downloaded',(info: any) => {
+  console.log('update downloaded',info)
+})
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
